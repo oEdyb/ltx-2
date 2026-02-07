@@ -50,12 +50,26 @@ fi
 
 log "ComfyUI root: $COMFYUI_ROOT"
 
-# ---------- Ensure huggingface-cli ----------
+# ---------- Detect HuggingFace CLI command ----------
 
-if ! command -v huggingface-cli &> /dev/null; then
+HF_CMD=""
+if command -v huggingface-cli &> /dev/null; then
+    HF_CMD="huggingface-cli"
+elif command -v hf &> /dev/null; then
+    HF_CMD="hf"
+else
     info "Installing huggingface_hub CLI..."
     pip install -U huggingface_hub[cli]
+    if command -v huggingface-cli &> /dev/null; then
+        HF_CMD="huggingface-cli"
+    elif command -v hf &> /dev/null; then
+        HF_CMD="hf"
+    else
+        err "Could not find huggingface CLI after install. Try: pip install -U huggingface_hub"
+        exit 1
+    fi
 fi
+log "Using HuggingFace CLI: $HF_CMD"
 
 # ---------- Directories ----------
 
@@ -80,7 +94,7 @@ download_hf() {
     fi
 
     info "Downloading $desc..."
-    huggingface-cli download "$repo" "$file" \
+    $HF_CMD download "$repo" "$file" \
         --local-dir "$dest" \
         --local-dir-use-symlinks False
     log "$desc — done"
@@ -136,8 +150,8 @@ if [ -f "$GEMMA_CHECK_FILE" ]; then
     log "Gemma 3 text encoder — already present"
 else
     info "Downloading Gemma 3 12B text encoder (~7GB)..."
-    info "(If this fails, you may need to run: huggingface-cli login)"
-    huggingface-cli download google/gemma-3-12b-it-qat-q4_0-unquantized \
+    info "(If this fails, you may need to run: hf auth login)"
+    $HF_CMD download google/gemma-3-12b-it-qat-q4_0-unquantized \
         --local-dir "$GEMMA_DIR" \
         --local-dir-use-symlinks False
     log "Gemma 3 text encoder — done"
