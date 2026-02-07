@@ -255,7 +255,7 @@ Source: https://ltx.io/model/model-blog/prompting-guide-for-ltx-2
 
 ## Gotchas & Lessons Learned
 
-1. **Gemma 3 requires HF auth** — Use `huggingface-cli download`, NOT `git clone`. Users need `huggingface-cli login` first if they haven't accepted the model license.
+1. **Gemma 3 requires HF auth** — Users need to accept the license at https://huggingface.co/google/gemma-3-12b-it-qat-q4_0-unquantized and run `hf auth login` before downloading.
 
 2. **ComfyUI workflow JSON is fragile** — One wrong link ID breaks everything silently. Always use the `WorkflowBuilder` class pattern instead of manual JSON editing.
 
@@ -275,18 +275,58 @@ Source: https://ltx.io/model/model-blog/prompting-guide-for-ltx-2
 
 10. **Spatial upscaler goes in `latent_upscale_models/`** — NOT in `checkpoints/`. This is a common mistake.
 
+11. **HuggingFace CLI command varies by environment** — Older installs have `huggingface-cli`, newer ones (RunPod, huggingface_hub v1.0+) use `hf`. Our download script auto-detects which is available. The `hf` subcommands differ slightly: `hf auth login` (not `hf login`), `hf download` (same args as `huggingface-cli download`).
+
+12. **`--local-dir-use-symlinks` is removed** — Deprecated and deleted in huggingface_hub v1.0+. Just use `--local-dir` alone. The new download system handles everything without symlinks.
+
+13. **RunPod ComfyUI template path is `/workspace/runpod-slim/ComfyUI`** — NOT `/workspace/ComfyUI`. The `runpod/comfyui:latest` template uses this non-obvious path. Both scripts auto-detect it.
+
+14. **RunPod ComfyUI template pre-installs ComfyUI-Manager** — No need to install it again. Also includes ComfyUI-KJNodes and Civicomfy. We only need to add ComfyUI-LTXVideo and ComfyMath.
+
+15. **RunPod `python` is not in PATH** — Use `python3` instead, or call modules directly. The `hf` command works but `huggingface-cli` does not.
+
+16. **Private GitHub repos need auth on RunPod** — RunPod pods don't have your GitHub credentials. Either make the repo public or set up a personal access token. We made it public since it contains no secrets.
+
+17. **A40 is better value than RTX 4090 for LTX-2** — A40 has 48GB VRAM ($0.40/hr) vs 4090's 24GB ($0.59/hr). The BF16 distilled model (~38GB) won't fit on a 4090 — you'd need the FP8 version. A40 runs everything without VRAM constraints. It's slower per clip (~45-60s vs ~25s) but cheaper per hour.
+
 ---
 
-## GPU Provider Strategy
+## RunPod Deployment Reference
 
-| Use Case | Provider | Cost | Notes |
-|----------|----------|------|-------|
-| Daily production | RunPod RTX 4090 | ~$0.50/hr | Native ComfyUI templates |
-| Quick API tests | fal.ai | $0.04/sec | Zero setup, test prompts |
-| Heavy batch runs | RunPod A100 80GB | ~$2/hr | No VRAM constraints |
-| Future automation | Modal | ~$2.50/hr | For Phase 2 Python pipeline |
+### Template & GPU
+- **Template**: `runpod/comfyui:latest` (official ComfyUI template)
+- **Recommended GPU**: A40 (48GB VRAM, $0.40/hr) — runs all model variants
+- **Alternative GPU**: RTX 4090 (24GB VRAM, $0.59/hr) — faster but FP8 models only
+- **Volume Disk**: 150 GB (models are ~70GB, need headroom)
 
-Recommended: **RunPod RTX 4090**. At ~$0.50/hr, a 2-hour session costs $1 and produces 50+ clips.
+### Paths on RunPod
+- ComfyUI install: `/workspace/runpod-slim/ComfyUI`
+- ComfyUI args: `/workspace/runpod-slim/comfyui_args.txt`
+- Our repo: `/workspace/ltx-2` (after git clone)
+- ASMR workflows (after setup): `/workspace/runpod-slim/ComfyUI/custom_nodes/ComfyUI-LTXVideo/example_workflows/asmr/`
+
+### Ports
+- **8188**: ComfyUI web UI
+- **8080**: FileBrowser (login: `admin` / `adminadmin12`)
+- **8888**: JupyterLab
+- **22**: SSH (needs PUBLIC_KEY in env vars)
+
+### Billing
+- Running: ~$0.43/hr (GPU + disk)
+- Stopped: ~$0.014/hr (disk storage only, ~$10/month)
+- Terminated: $0 (everything deleted)
+- **Always Stop the pod when done generating.** Don't leave it running.
+
+### Setup Commands (run in terminal after pod boots)
+```bash
+git clone https://github.com/oEdyb/ltx-2.git /workspace/ltx-2
+hf auth login                    # paste HuggingFace token
+bash /workspace/ltx-2/scripts/setup-runpod.sh   # ~30 min first time
+```
+
+### GitHub Repo
+- **URL**: https://github.com/oEdyb/ltx-2 (public)
+- Push updates locally, `git pull` on RunPod to sync
 
 ---
 
