@@ -1,0 +1,40 @@
+# ASMR Rain Prompts — LTX-2
+# Copy any prompt below and paste into the "Your ASMR Prompt" node.
+# Edit freely! These are starting points, not rigid templates.
+# Tips: Include audio descriptions, use present tense, keep camera static.
+
+---
+
+## Rain on Window (Close-up)
+
+Style: cinematic-realistic with warm tones. A close-up shot of a rain-streaked window pane, with water droplets slowly trailing down the glass in winding paths. Beyond the window, blurred city lights cast a warm golden bokeh against the dark evening sky. A single lit candle sits on the wooden windowsill, its flame flickering gently and casting soft amber reflections in the wet glass. The steady rhythm of rain tapping against the window fills the audio, accompanied by the occasional low rumble of distant thunder. The camera remains perfectly still, framing the intimate scene.
+
+---
+
+## Rainy Forest Path
+
+Style: cinematic nature documentary. A wide shot of a moss-covered forest path during a gentle rainfall. Fat raindrops fall through the canopy of tall pine trees, splashing softly on broad green leaves and forming tiny ripples in shallow puddles along the dirt trail. Mist hangs low between the tree trunks, diffusing the pale daylight into a soft even glow. The sound of rain pattering on leaves creates a layered soundscape, mixed with the quiet dripping of water from branch to branch and the faint rustling of wind through the pine needles. The camera holds steady, looking down the path as it disappears into the misty distance.
+
+---
+
+## Puddle Reflections
+
+Style: realistic with shallow depth of field. A low-angle close-up of a cobblestone street puddle during a light rain shower. Raindrops fall rhythmically into the puddle, creating expanding concentric ripples that distort the reflected neon signs and streetlights above. The warm orange and cool blue reflections shimmer and dance with each new droplet impact. The gentle splashing of raindrops hitting the water surface is the dominant sound, accompanied by the soft ambient hum of a quiet city street at night. The camera stays low and motionless, capturing the mesmerizing pattern of overlapping ripples.
+
+---
+
+## Rainy Window with Tea
+
+Style: cozy cinematic with warm color grading. A medium shot from inside a dimly lit room, looking out through a large rain-covered window. Rivulets of water trace slow paths down the glass while the blurred shapes of trees and rooftops are visible beyond. In the foreground, a ceramic mug of steaming tea sits on a worn wooden table beside an open book with slightly yellowed pages. Wisps of steam rise gently from the mug, curling in the soft lamplight. The audio features a continuous soft rain on glass, the faint whistle of wind around the window frame, and the quiet tick of a wall clock. The scene is still and contemplative.
+
+---
+
+## Tropical Rain on Tin Roof
+
+Style: warm cinematic. A medium-wide shot of a covered wooden porch looking out at a tropical garden during a heavy downpour. Rain falls in thick sheets, drumming loudly on the corrugated tin roof overhead. Lush green banana leaves bob and sway under the weight of the rain, sending sprays of water cascading in all directions. Water streams off the roof edge in a continuous curtain, pooling in the red earth below. The audio is rich with the loud rhythmic drumming of rain on metal, the rushing sound of water running off the roof, and the occasional crack of thunder in the grey overcast sky. The camera remains sheltered and still under the porch.
+
+---
+
+## Rain on Car Window (Night Drive)
+
+Style: moody cinematic. A close-up through a car side window at night, watching rain streak horizontally across the glass as the vehicle moves slowly. Blurred streetlights and traffic signals smear into long trails of orange, red, and white light through the wet glass. Raindrops catch and refract the passing lights, creating tiny prisms that shift color as they slide across the window. Inside the car, the dashboard casts a faint blue glow. The audio features the muffled patter of rain against the car body, the rhythmic sweep of windshield wipers from nearby, and the low hum of the engine at idle speed. The camera is fixed on the window glass.

@@ -1,0 +1,1018 @@
+{
+  "id": "895fc909-2b9b-4a4d-82c0-0914f5876a3e",
+  "revision": 0,
+  "last_node_id": 51,
+  "last_link_id": 24,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -3200,
+        0
+      ],
+      "size": [
+        400,
+        100
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            4
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": []
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "ltx-2-19b-distilled.safetensors"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LTXVAudioVAELoader",
+      "pos": [
+        -3200,
+        450
+      ],
+      "size": [
+        400,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "Audio VAE",
+          "type": "VAE",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVAudioVAELoader"
+      },
+      "widgets_values": [
+        "ltx-2-19b-distilled.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LTXVGemmaCLIPModelLoader",
+      "pos": [
+        -3200,
+        200
+      ],
+      "size": [
+        400,
+        100
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            6,
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVGemmaCLIPModelLoader"
+      },
+      "widgets_values": [
+        "gemma-3-12b-it-qat-q4_0-unquantized/model-00001-of-00005.safetensors",
+        "ltx-2-19b-distilled.safetensors",
+        1024
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LatentUpscaleModelLoader",
+      "pos": [
+        -3200,
+        570
+      ],
+      "size": [
+        400,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT_UPSCALE_MODEL",
+          "type": "LATENT_UPSCALE_MODEL",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LatentUpscaleModelLoader"
+      },
+      "widgets_values": [
+        "ltx-2-spatial-upscaler-x2-1.0.safetensors"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -2700,
+        0
+      ],
+      "size": [
+        350,
+        82
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "ltx-2-19b-lora-camera-control-static.safetensors",
+        1
+      ],
+      "title": "Camera LoRA (Static - ASMR)"
+    },
+    {
+      "id": 6,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -2700,
+        150
+      ],
+      "size": [
+        350,
+        82
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "your_camera_lora.safetensors",
+        1
+      ],
+      "title": "Optional Style LoRA (Ctrl+B to enable)"
+    },
+    {
+      "id": 10,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -2700,
+        350
+      ],
+      "size": [
+        450,
+        180
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline"
+      },
+      "widgets_values": [
+        "A cozy window scene on a rainy evening. Raindrops gently streak down a frosted glass window pane. Beyond the glass, blurred city lights glow warmly in soft orange and yellow bokeh. Inside, a lit candle flickers softly on the windowsill beside a steaming cup of tea. The sound of steady rain pattering against the window fills the space, accompanied by the occasional distant rumble of thunder. The camera remains static, framing the intimate scene in a medium close-up."
+      ],
+      "title": "Your ASMR Prompt"
+    },
+    {
+      "id": 11,
+      "type": "LTXVGemmaEnhancePrompt",
+      "pos": [
+        -2150,
+        200
+      ],
+      "size": [
+        400,
+        250
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 6
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVGemmaEnhancePrompt"
+      },
+      "widgets_values": [
+        "",
+        "You are a Creative Assistant specializing in ASMR and ambient video content. Given a user's raw input prompt, expand it into a detailed video generation prompt with rich visuals and immersive audio.\n\n#### Guidelines\n- Strictly follow all aspects of the user's raw input.\n- If the input is vague, invent concrete details: lighting, textures, materials, atmospheric elements.\n- Emphasize ambient audio: rain, wind, crackling fire, rustling leaves, flowing water, soft footsteps.\n- Use active language: present-progressive verbs (\"is falling,\" \"crackling softly\").\n- Maintain chronological flow with temporal connectors (\"as,\" \"while,\" \"gradually\").\n- Audio layer: Describe complete soundscape alongside visuals. Be specific (e.g., \"gentle rain tapping against a frosted window pane\") not vague (e.g., \"rain sounds\").\n- Camera: Default to STATIC or very slow movement unless otherwise specified.\n- Style: Include visual style at the beginning: \"Style: <style>, <rest of prompt>.\" Default to cinematic-realistic.\n- Mood: Emphasize calm, cozy, contemplative, meditative atmospheres.\n- Visual and audio only: NO non-visual/auditory senses.\n- Restrained language: Use mild, natural phrasing. Avoid dramatic terms.\n\n#### Important notes\n- Camera motion: Default to STATIC. Only add movement if requested.\n- No timestamps or cuts: Single continuous scene.\n- Format: Start directly with Style and scene description. NO \"The scene opens with...\"\n- DO NOT start your response with special characters.\n\n#### Output Format (Strict):\n- Single continuous paragraph in natural English.\n- NO titles, headings, prefaces, code fences, or Markdown.\n",
+        512,
+        true,
+        42,
+        "randomize"
+      ],
+      "title": "ASMR Prompt Enhancer"
+    },
+    {
+      "id": 12,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -1650,
+        200
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 7
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            10,
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "title": "Enhanced Prompt (Positive)"
+    },
+    {
+      "id": 13,
+      "type": "LTXVConditioning",
+      "pos": [
+        -1250,
+        200
+      ],
+      "size": [
+        210,
+        94
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 10
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 11
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVConditioning"
+      },
+      "widgets_values": [
+        25
+      ]
+    },
+    {
+      "id": 20,
+      "type": "EmptyImage",
+      "pos": [
+        -2700,
+        620
+      ],
+      "size": [
+        210,
+        130
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyImage"
+      },
+      "widgets_values": [
+        768,
+        512,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 21,
+      "type": "PrimitiveInt",
+      "pos": [
+        -2700,
+        800
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        65,
+        "fixed"
+      ],
+      "title": "Frame Count (8n+1: 65=2.7s, 97=4s, 121=5s)"
+    },
+    {
+      "id": 22,
+      "type": "PrimitiveFloat",
+      "pos": [
+        -2700,
+        930
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            12,
+            15,
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat"
+      },
+      "widgets_values": [
+        24
+      ],
+      "title": "Frame Rate"
+    },
+    {
+      "id": 23,
+      "type": "CM_FloatToInt",
+      "pos": [
+        -2400,
+        930
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "a",
+          "type": "FLOAT",
+          "widget": {
+            "name": "a"
+          },
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CM_FloatToInt"
+      },
+      "widgets_values": [
+        0
+      ],
+      "title": "Frame Rate -> Int"
+    },
+    {
+      "id": 30,
+      "type": "61915fab-cab7-41be-9727-d69a7e41f24a",
+      "pos": [
+        -850,
+        0
+      ],
+      "size": [
+        250,
+        300
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "model stage 1",
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "label": "model stage 2",
+          "name": "model_1",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "label": "upscale model",
+          "name": "upscale_model_1",
+          "type": "LATENT_UPSCALE_MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 14
+        },
+        {
+          "label": "VAE",
+          "name": "vae",
+          "type": "VAE",
+          "link": 20
+        },
+        {
+          "label": "audio vae",
+          "name": "audio_vae",
+          "type": "VAE",
+          "link": 21
+        },
+        {
+          "label": "empty latent image",
+          "name": "empty_latent_image",
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "name": "length",
+          "type": "INT",
+          "widget": {
+            "name": "length"
+          },
+          "link": 23
+        },
+        {
+          "label": "frame rate",
+          "name": "frame_rate",
+          "type": "INT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "label": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            16
+          ]
+        },
+        {
+          "label": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "61915fab-cab7-41be-9727-d69a7e41f24a"
+      },
+      "widgets_values": [
+        65,
+        25,
+        42
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CreateVideo",
+      "pos": [
+        -450,
+        0
+      ],
+      "size": [
+        210,
+        78
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 16
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 17,
+          "shape": 7
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        30
+      ]
+    },
+    {
+      "id": 41,
+      "type": "SaveVideo",
+      "pos": [
+        -150,
+        0
+      ],
+      "size": [
+        630,
+        800
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 19
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ASMR-LTX2",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "MarkdownNote",
+      "pos": [
+        -3200,
+        -150
+      ],
+      "size": [
+        600,
+        130
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# ASMR Text-to-Video\n\n1. Edit **Your ASMR Prompt** with your scene description\n2. Include audio cues: rain, fire, wind, water, etc.\n3. Frame Count: 65 = ~2.7s, 97 = ~4s, 121 = ~5s at 24fps\n4. Width/Height must be divisible by 64\n5. Click **Queue Prompt** to generate!"
+      ],
+      "title": "ASMR Text-to-Video"
+    },
+    {
+      "id": 51,
+      "type": "MarkdownNote",
+      "pos": [
+        -3200,
+        680
+      ],
+      "size": [
+        400,
+        80
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "Width & height must be divisible by **64**.\nFrame count must follow **8n+1** (9, 17, 25, 33, 41, 49, 57, 65, 73, 81, 89, 97, 105, 113, 121).\n768x512 base -> upscales to 1536x1024 via spatial upscaler."
+      ],
+      "title": "Video Size Notes"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      5,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      6,
+      0,
+      30,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      30,
+      1,
+      "MODEL"
+    ],
+    [
+      5,
+      4,
+      0,
+      30,
+      2,
+      "LATENT_UPSCALE_MODEL"
+    ],
+    [
+      6,
+      3,
+      0,
+      11,
+      0,
+      "CLIP"
+    ],
+    [
+      7,
+      3,
+      0,
+      12,
+      0,
+      "CLIP"
+    ],
+    [
+      8,
+      10,
+      0,
+      11,
+      2,
+      "STRING"
+    ],
+    [
+      9,
+      11,
+      0,
+      12,
+      1,
+      "STRING"
+    ],
+    [
+      10,
+      12,
+      0,
+      13,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      12,
+      0,
+      13,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      12,
+      22,
+      0,
+      13,
+      2,
+      "FLOAT"
+    ],
+    [
+      13,
+      13,
+      0,
+      30,
+      3,
+      "CONDITIONING"
+    ],
+    [
+      14,
+      13,
+      1,
+      30,
+      4,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      22,
+      0,
+      23,
+      0,
+      "FLOAT"
+    ],
+    [
+      16,
+      30,
+      0,
+      40,
+      0,
+      "IMAGE"
+    ],
+    [
+      17,
+      30,
+      1,
+      40,
+      1,
+      "AUDIO"
+    ],
+    [
+      18,
+      22,
+      0,
+      40,
+      2,
+      "FLOAT"
+    ],
+    [
+      19,
+      40,
+      0,
+      41,
+      0,
+      "VIDEO"
+    ],
+    [
+      20,
+      1,
+      2,
+      30,
+      5,
+      "VAE"
+    ],
+    [
+      21,
+      2,
+      0,
+      30,
+      6,
+      "VAE"
+    ],
+    [
+      22,
+      20,
+      0,
+      30,
+      7,
+      "IMAGE"
+    ],
+    [
+      23,
+      21,
+      0,
+      30,
+      8,
+      "INT"
+    ],
+    [
+      24,
+      23,
+      0,
+      30,
+      9,
+      "INT"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "ASMR Text-to-Video (LTX-2 Distilled)",
+      "bounding": [
+        -3400,
+        -200,
+        4200,
+        1200
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7,
+      "offset": [
+        800,
+        200
+      ]
+    },
+    "info": {
+      "name": "ASMR Text-to-Video (LTX-2 Distilled)",
+      "description": "Generate ASMR/ambient video clips from text prompts with built-in audio."
+    }
+  },
+  "version": 0.4
+}

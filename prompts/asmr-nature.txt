@@ -1,0 +1,39 @@
+# ASMR Nature Prompts — LTX-2
+# Copy any prompt below and paste into the "Your ASMR Prompt" node.
+# Edit freely! These are starting points.
+
+---
+
+## Forest Stream
+
+Style: cinematic nature. A medium shot of a small woodland stream flowing over smooth grey stones and fallen mossy logs. Clear water catches the dappled sunlight filtering through the overhead canopy, creating shifting patterns of light and shadow on the stream bed. Small eddies form behind each stone, sending tiny bubbles downstream. Ferns and wildflowers line the muddy banks. The audio is filled with the continuous gentle gurgling and babbling of flowing water over rocks, mixed with the soft chirping of distant birds and the occasional rustle of leaves in a light breeze. The camera holds perfectly still beside the stream.
+
+---
+
+## Autumn Leaves Falling
+
+Style: warm cinematic with golden tones. A slow-motion medium shot looking upward through a canopy of autumn maple trees. Golden, amber, and deep red leaves detach one by one from their branches and drift slowly downward, spinning and tumbling in gentle spirals against the pale blue sky. Sunlight filters through the remaining foliage, creating a warm backlit glow around each falling leaf. The audio features the quiet whisper of wind through dry leaves, the soft papery sound of leaves brushing past each other as they fall, and the faint crunch of already-fallen leaves shifting on the ground below. The camera is static, pointing upward.
+
+---
+
+## Crackling Fireplace
+
+Style: cozy realistic with warm lighting. A close-up shot of a stone fireplace with a well-established log fire burning steadily. Orange and yellow flames dance and lick around the dark charred logs, while glowing embers pulse with deep red light beneath. Occasional small sparks pop upward and float briefly before fading. The warm light from the fire illuminates the rough stone surround and casts flickering shadows on the nearby wall. The audio is dominated by the rich crackling and popping of burning wood, the low steady roar of the fire drawing air, and the occasional soft thud as a log settles deeper into the embers. The camera is motionless, close to the hearth.
+
+---
+
+## Meadow with Wind
+
+Style: peaceful cinematic. A wide shot across a wildflower meadow on a warm summer afternoon. Tall grass and delicate purple and white wildflowers sway gently in rhythmic waves as a soft breeze passes through. Butterflies drift lazily between the flower heads. In the background, the green treeline of a distant forest sits below a sky of soft white clouds. Golden afternoon sunlight bathes the entire scene in warm tones. The audio captures the continuous soft whooshing of wind through tall grass, the quiet humming and buzzing of insects, and the distant melodic call of a songbird. The camera remains wide and still.
+
+---
+
+## Snowy Pine Forest
+
+Style: cool cinematic with blue-white tones. A medium shot of a quiet pine forest blanketed in fresh white snow. Heavy snow sits on every branch, and a light snowfall continues, with large soft flakes drifting slowly downward through the still air. The ground is a smooth unbroken layer of white, with gentle mounds formed over hidden rocks and fallen branches. Pale winter light filters through the grey overcast sky, creating a soft flat illumination without harsh shadows. The audio is profoundly quiet — just the faint whisper of snowflakes landing on snow, an occasional soft creak of a branch under snow weight, and the muffled distant sound of wind through the tree tops. The scene is perfectly still.
+
+---
+
+## Waterfall Pool
+
+Style: cinematic nature with rich tones. A medium shot of a small waterfall cascading down a moss-covered rock face into a clear pool below. White water tumbles and froths as it hits the pool surface, sending up a fine mist that catches the sunlight in tiny rainbow fragments. The pool's surface ripples outward in concentric circles from the base of the falls, while the edges remain calm enough to reflect the surrounding green foliage and grey rocks. The audio is rich with the continuous rushing and splashing of falling water, the deeper bass tone of water hitting the pool, and the ambient echo of the sound bouncing off the surrounding rock walls. The camera is steady, positioned at the pool edge.

@@ -1,0 +1,39 @@
+# ASMR Cozy Prompts — LTX-2
+# Copy any prompt below and paste into the "Your ASMR Prompt" node.
+# Edit freely! These are starting points.
+
+---
+
+## Candlelit Reading Nook
+
+Style: warm cinematic with shallow depth of field. A close-up shot of a cozy reading corner in a dimly lit room. A thick hardcover book lies open on a soft knitted blanket, its pages slightly curled. Three beeswax candles of different heights burn steadily on a small wooden side table, their warm golden light casting a soft glow across the textured fabric and worn leather book spine. A ceramic cup of tea sits nearby, thin wisps of steam rising gently. The audio features the quiet crackle of candle wicks, the faint tick of a clock somewhere in the room, and the soft rustle of a page being slowly turned. The camera is still and intimate.
+
+---
+
+## Morning Coffee Ritual
+
+Style: cinematic-realistic with warm morning tones. A medium close-up of a kitchen counter in soft early morning light streaming through a nearby window. A hand-thrown ceramic mug sits beneath a slow drip of dark coffee from a pour-over filter. The coffee streams in a thin steady thread, and the surface in the mug ripples gently with each drip. Steam rises in lazy curls, catching the golden sidelight from the window. The audio captures the steady drip-drip of coffee falling into the mug, the quiet bubbling of the last water percolating through the grounds, and the ambient sound of morning birdsong through a partially open window. The scene is quiet and unhurried.
+
+---
+
+## Blanket and Rain
+
+Style: cozy cinematic with muted tones. A medium shot of a plush sofa corner piled with soft textured blankets and cushions in muted earth tones. A small reading lamp with a warm fabric shade casts a gentle pool of light. Through the window behind the sofa, rain streams steadily down the glass, blurring the grey daylight outside. A pair of wool socks rests on the edge of the sofa beside a half-finished cup of cocoa. The audio is layered with the soothing sound of rain against the window, the soft creaking of the old house settling, and the faint distant rumble of thunder. The camera holds still on the inviting scene.
+
+---
+
+## Fairy Lights at Dusk
+
+Style: dreamy cinematic with warm bokeh. A close-up of a string of warm white fairy lights draped across a wooden headboard and trailing down to a bedside table. The tiny bulbs glow softly, each creating a small starburst of warm light with a gentle bokeh effect. A few dried eucalyptus sprigs are tucked into the light string. Beyond the bed, a window shows the deep blue of dusk, with the last traces of pink sunset on the horizon. The audio is very quiet — just the faint electrical hum of the fairy lights, the soft breathing-like sound of a gentle breeze outside, and the distant muffled sound of evening crickets beginning to chirp. The scene is perfectly calm.
+
+---
+
+## Writing Desk
+
+Style: vintage cinematic with warm amber tones. A medium close-up of a worn wooden writing desk lit by a green-shaded banker's lamp. A fountain pen rests on a half-written letter on cream paper, with a bottle of dark blue ink nearby. The lamp casts sharp warm light across the desk surface, leaving the rest of the room in soft darkness. A small stack of leather-bound journals sits to one side. The audio features the quiet scratch of pen on paper as if someone is writing just out of frame, the gentle ticking of a mantel clock, and the soft creak of an old wooden chair. The camera is still and close.
+
+---
+
+## Cat by the Window
+
+Style: warm cinematic with soft focus. A medium shot of a fluffy ginger cat curled up on a cushioned window seat, basking in a patch of warm afternoon sunlight. The cat's fur glows golden where the light falls, and its tail curls gently with each slow breath. Through the window behind, green garden foliage sways softly in a gentle breeze. Dust motes float slowly through the sunbeam. The audio captures the cat's soft rhythmic purring, the gentle rustle of leaves outside, and the quiet ambient hum of a peaceful afternoon. The camera remains still, holding the serene moment.

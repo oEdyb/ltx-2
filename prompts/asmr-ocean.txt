@@ -1,0 +1,39 @@
+# ASMR Ocean Prompts — LTX-2
+# Copy any prompt below and paste into the "Your ASMR Prompt" node.
+# Edit freely! These are starting points.
+
+---
+
+## Gentle Waves on Shore
+
+Style: cinematic-realistic with cool blue tones. A wide shot of a calm beach at golden hour, with gentle waves rolling slowly up the smooth wet sand and retreating in thin sheets of foam. The water catches the low warm sunlight, creating a shimmering golden path across the surface toward the horizon. Small shells and pebbles are revealed and hidden again with each wave cycle. The sky above is a gradient of soft peach and lavender. The audio features the rhythmic swoosh and hiss of waves advancing and receding on sand, the quiet bubbling of foam as it dissolves, and the distant cry of a seagull. The camera is positioned low on the beach, perfectly still.
+
+---
+
+## Rocky Tide Pool
+
+Style: nature documentary with rich color. A close-up shot of a rocky tide pool on a coastline, with crystal clear water revealing colorful sea anemones, small hermit crabs, and smooth pebbles on the bottom. A gentle wave washes over the rock edge, briefly flooding the pool and stirring the water surface before draining back. The anemone tentacles wave softly in the current. Small air bubbles cling to the rock surfaces and catch the overhead sunlight. The audio captures the splash and gurgle of water washing over the rocks, the quiet clicking of small crabs moving across stone, and the continuous background rumble of the ocean surf nearby. The camera holds close and motionless above the pool.
+
+---
+
+## Sunset over Calm Ocean
+
+Style: cinematic wide-angle with warm tones. A wide establishing shot of a perfectly calm ocean at sunset. The water surface is smooth and glassy, reflecting the deep orange and pink sky like a mirror. The sun sits just above the horizon, a glowing disc sending a long warm reflection straight across the water toward the camera. Thin wispy clouds are painted in shades of coral and gold. A lone sailboat silhouette sits motionless in the middle distance. The audio is serene — just the gentle lapping of tiny wavelets against something nearby, the soft whisper of a barely perceptible breeze, and the distant low horn of a far-off ship. The camera is wide and still.
+
+---
+
+## Underwater Coral Reef
+
+Style: cinematic underwater with natural lighting. A slow-moving shot through a shallow coral reef in clear tropical water. Sunlight streams down from the surface above in shifting beams, illuminating branching coral formations in muted pinks, purples, and greens. Small schools of bright tropical fish drift lazily between the coral heads, their scales catching the filtered light. Air bubbles rise occasionally from hidden crevices. The water itself has a soft blue-green tint. The audio is muffled and subaquatic — the low rumbling ambience of underwater, the distant popping and clicking of the reef itself, and the gentle rushing sound of water movement past the camera. The camera drifts very slowly forward through the reef.
+
+---
+
+## Beach at Night
+
+Style: moody cinematic with cool blue tones. A wide shot of a deserted beach under a clear night sky full of stars. Gentle phosphorescent waves wash up on the dark sand, leaving brief trails of soft blue-green bioluminescent light that fade as the water retreats. The Milky Way stretches across the sky above, reflected faintly in the wet sand. A few distant lights from a coastal town glow warmly along the horizon. The audio features the steady rhythmic wash of waves on sand, the quiet sizzle of foam dissolving on the beach, and the soft constant whisper of a night ocean breeze. The camera is static and wide.
+
+---
+
+## Driftwood and Waves
+
+Style: intimate cinematic with natural tones. A low close-up shot of weathered grey driftwood half-buried in pale sand, with small waves gently lapping around its base. The water arrives in thin clear sheets that briefly submerge the wood before pulling back, leaving wet sand that glistens in the overcast daylight. Small barnacles and dried seaweed cling to the wood surface. Grains of sand swirl slowly in the retreating water. The audio captures the soft wet slap of small waves against the wood, the hissing of water filtering through sand, and the steady low roar of larger waves breaking further out. The camera is low and still, almost at sand level.

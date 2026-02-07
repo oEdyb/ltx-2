@@ -1,0 +1,19 @@
+# Generated workflows are committed, but ignore any temp files
+*.pyc
+__pycache__/
+
+# Don't commit model files if someone downloads locally
+*.safetensors
+*.ckpt
+*.bin
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
