@@ -287,7 +287,19 @@ Source: https://ltx.io/model/model-blog/prompting-guide-for-ltx-2
 
 16. **Private GitHub repos need auth on RunPod** — RunPod pods don't have your GitHub credentials. Either make the repo public or set up a personal access token. We made it public since it contains no secrets.
 
-17. **A40 is better value than RTX 4090 for LTX-2** — A40 has 48GB VRAM ($0.40/hr) vs 4090's 24GB ($0.59/hr). The BF16 distilled model (~38GB) won't fit on a 4090 — you'd need the FP8 version. A40 runs everything without VRAM constraints. It's slower per clip (~45-60s vs ~25s) but cheaper per hour.
+17. **A40 OOMs on the two-stage pipeline with BF16** — Despite 48GB VRAM, the A40 only has 50GB system RAM. The two-stage sampler loads the model twice (once with LoRA for stage 1, once without for stage 2). BF16 (38GB x2) OOMs instantly. FP8 (19GB x2) also OOMed at 768x512 with 65 frames. Need to either: use lower resolution (512x320, 33 frames), skip two-stage upscaling, or get a GPU with more system RAM (L40 has 250GB RAM).
+
+18. **FP8 distilled model is essential** — Always use `ltx-2-19b-distilled-fp8.safetensors` on the A40. The BF16 version is too large. Must change BOTH `CheckpointLoaderSimple` AND `LTXVAudioVAELoader` nodes to point to the FP8 file.
+
+19. **Custom ASMR workflows don't appear in ComfyUI Templates** — Workflows copied to a subfolder of `example_workflows/` don't auto-discover. Only top-level files in `example_workflows/` show up. Users must drag-and-drop JSON from GitHub or FileBrowser, or use the official `LTX-2_T2V_Distilled_wLora` template and configure manually.
+
+20. **"Queue Prompt" is now called "Run"** — The ComfyUI UI was updated. The button is labeled "Run" not "Queue Prompt".
+
+21. **Gemma 3 is a gated model** — Even with a valid HF token, download fails with "Repository not found" unless user has explicitly accepted the license at https://huggingface.co/google/gemma-3-12b-it-qat-q4_0-unquantized
+
+22. **Pod restart required after OOM** — When OOM triggers "Too many open files in system" and "Cannot allocate memory", the pod is in an unrecoverable state. Must hard-restart from the RunPod dashboard (three dots → Restart). Files on Volume Disk survive restarts.
+
+23. **First generation is slow (~2-3 min)** — Model loads from disk to GPU on first run. Subsequent generations are faster (~45-60s on A40) because model stays in VRAM.
 
 ---
 
@@ -295,9 +307,18 @@ Source: https://ltx.io/model/model-blog/prompting-guide-for-ltx-2
 
 ### Template & GPU
 - **Template**: `runpod/comfyui:latest` (official ComfyUI template)
-- **Recommended GPU**: A40 (48GB VRAM, $0.40/hr) — runs all model variants
-- **Alternative GPU**: RTX 4090 (24GB VRAM, $0.59/hr) — faster but FP8 models only
+- **Current GPU**: A40 (48GB VRAM, 50GB RAM, $0.40/hr) — FP8 models only, low-res for two-stage
+- **Problem**: A40's 50GB system RAM is the bottleneck, not VRAM. Two-stage pipeline OOMs.
+- **Better option (untested)**: L40 (48GB VRAM, **250GB RAM**, $0.99/hr) — 5x more system RAM
+- **Alternative**: RTX 4090 (24GB VRAM, $0.59/hr) — only single-stage, no upscaling
 - **Volume Disk**: 150 GB (models are ~70GB, need headroom)
+- **MUST use FP8 model** on A40: `ltx-2-19b-distilled-fp8.safetensors`
+
+### Safe generation settings for A40
+- Resolution: **512x320** (not 768x512 — that OOMs with two-stage)
+- Frame count: **33** (not 65 — reduces memory pressure)
+- Model: **FP8 distilled** (not BF16)
+- These are conservative starting points. Can try increasing after confirming it works.
 
 ### Paths on RunPod
 - ComfyUI install: `/workspace/runpod-slim/ComfyUI`
@@ -323,6 +344,28 @@ git clone https://github.com/oEdyb/ltx-2.git /workspace/ltx-2
 hf auth login                    # paste HuggingFace token
 bash /workspace/ltx-2/scripts/setup-runpod.sh   # ~30 min first time
 ```
+
+### After setup: must also download FP8 model
+The setup script downloads BF16 distilled, but A40 needs FP8:
+```bash
+hf download Lightricks/LTX-2 ltx-2-19b-distilled-fp8.safetensors \
+    --local-dir /workspace/runpod-slim/ComfyUI/models/checkpoints/
+```
+
+### Loading workflows in ComfyUI
+Our ASMR workflows don't appear in Templates. Options:
+1. **Drag-and-drop** from https://github.com/oEdyb/ltx-2/blob/master/workflows/asmr-txt2vid.json
+2. **FileBrowser** (port 8080, admin/adminadmin12) → download JSON → drag into ComfyUI
+3. **Use official template**: Templates → ComfyUI-LTXVideo → LTX-2_T2V_Distilled_wLora, then manually change model to FP8 and adjust settings
+
+### Prompting tips (from actual testing)
+Follow this structure for best results:
+- **Core Actions**: Describe events as they occur over time
+- **Audio**: Describe sounds needed for the scene with specificity
+- **Consistency**: Don't contradict what's in the reference image (I2V)
+- Start with `Style: cinematic-realistic,` then a single flowing paragraph
+- Present-tense, active verbs ("flames dance", "rain patters")
+- Describe audio concretely ("steady patter of rain against glass" not "rain sounds")
 
 ### GitHub Repo
 - **URL**: https://github.com/oEdyb/ltx-2 (public)
