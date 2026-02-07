@@ -1,0 +1,922 @@
+{
+  "id": "4b1ffba0-6624-439a-a474-ec5737f5974e",
+  "revision": 0,
+  "last_node_id": 50,
+  "last_link_id": 22,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -3200,
+        0
+      ],
+      "size": [
+        400,
+        100
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": []
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            6,
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "ltx-2-19b-distilled-fp8.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LTXVGemmaCLIPModelLoader",
+      "pos": [
+        -3200,
+        180
+      ],
+      "size": [
+        400,
+        100
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVGemmaCLIPModelLoader"
+      },
+      "widgets_values": [
+        "gemma-3-12b-it-qat-q4_0-unquantized/model-00001-of-00005.safetensors",
+        "ltx-2-19b-distilled-fp8.safetensors",
+        1024
+      ]
+    },
+    {
+      "id": 5,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -2700,
+        0
+      ],
+      "size": [
+        350,
+        82
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "ltx-2-19b-lora-camera-control-static.safetensors",
+        1
+      ],
+      "title": "Camera LoRA (Static - ASMR)"
+    },
+    {
+      "id": 6,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -2700,
+        150
+      ],
+      "size": [
+        350,
+        82
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "your_lora.safetensors",
+        1
+      ],
+      "title": "Optional Style LoRA (Ctrl+B to enable)"
+    },
+    {
+      "id": 10,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        -2700,
+        350
+      ],
+      "size": [
+        500,
+        220
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline"
+      },
+      "widgets_values": [
+        "Style: hyper-realistic, shot on ARRI Alexa, 85mm lens, shallow depth of field. A static close-up of a rain-streaked window pane at night. Heavy raindrops streak slowly down the frosted glass, each tracing a glistening path downward. Beyond the glass, blurred city lights glow warmly in soft orange and yellow bokeh. A lit candle flickers softly on the windowsill beside a steaming ceramic cup of tea. Condensation slowly forms on the inside of the glass. The camera remains perfectly still, framing the intimate scene in a medium close-up."
+      ],
+      "title": "Your ASMR Prompt (describe visuals only \u2014 no audio needed)"
+    },
+    {
+      "id": 12,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -2100,
+        350
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 8
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            10,
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "title": "Text Encode"
+    },
+    {
+      "id": 22,
+      "type": "PrimitiveFloat",
+      "pos": [
+        -2700,
+        630
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            12,
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat"
+      },
+      "widgets_values": [
+        24
+      ],
+      "title": "Frame Rate"
+    },
+    {
+      "id": 13,
+      "type": "LTXVConditioning",
+      "pos": [
+        -1700,
+        350
+      ],
+      "size": [
+        210,
+        94
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 10
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 11
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            13
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVConditioning"
+      },
+      "widgets_values": [
+        24
+      ]
+    },
+    {
+      "id": 14,
+      "type": "STGGuiderAdvanced",
+      "pos": [
+        -1350,
+        0
+      ],
+      "size": [
+        350,
+        280
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "STGGuiderAdvanced"
+      },
+      "widgets_values": [
+        0.998,
+        true,
+        "1.0",
+        "1",
+        "0",
+        "1",
+        "[29]"
+      ],
+      "title": "Guidance (CFG=1 for Distilled)"
+    },
+    {
+      "id": 15,
+      "type": "KSamplerSelect",
+      "pos": [
+        -1350,
+        340
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "euler"
+      ],
+      "title": "Sampler Algorithm"
+    },
+    {
+      "id": 16,
+      "type": "BasicScheduler",
+      "pos": [
+        -1350,
+        450
+      ],
+      "size": [
+        250,
+        110
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicScheduler"
+      },
+      "widgets_values": [
+        "normal",
+        8,
+        1.0
+      ],
+      "title": "Scheduler (8 steps for Distilled)"
+    },
+    {
+      "id": 17,
+      "type": "RandomNoise",
+      "pos": [
+        -1350,
+        610
+      ],
+      "size": [
+        210,
+        82
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        42,
+        "randomize"
+      ],
+      "title": "Noise Seed"
+    },
+    {
+      "id": 30,
+      "type": "LTXVBaseSampler",
+      "pos": [
+        -850,
+        0
+      ],
+      "size": [
+        300,
+        300
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 6
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 15
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 16
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 17
+        },
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "denoised",
+          "type": "LATENT",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": []
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LTXVBaseSampler"
+      },
+      "widgets_values": [
+        768,
+        512,
+        65
+      ],
+      "title": "LTX-2 Video Sampler (No Audio)"
+    },
+    {
+      "id": 31,
+      "type": "VAEDecode",
+      "pos": [
+        -450,
+        0
+      ],
+      "size": [
+        210,
+        78
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 19
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "title": "Decode Video Latent"
+    },
+    {
+      "id": 40,
+      "type": "CreateVideo",
+      "pos": [
+        -150,
+        0
+      ],
+      "size": [
+        210,
+        78
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        24
+      ]
+    },
+    {
+      "id": 41,
+      "type": "SaveVideo",
+      "pos": [
+        150,
+        0
+      ],
+      "size": [
+        630,
+        800
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 22
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/ASMR-NoAudio",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "MarkdownNote",
+      "pos": [
+        -3200,
+        -180
+      ],
+      "size": [
+        600,
+        150
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# ASMR Text-to-Video \u2014 No Audio\n\nVideo-only pipeline. **Layer ambient audio in CapCut/DaVinci.**\nUses LTXVBaseSampler \u2014 no audio overhead, no two-stage upscale.\n\n- Width/Height: divisible by 64 (default 768x512)\n- Frames: 8n+1 rule (65=2.7s, 97=4s, 121=5s at 24fps)\n- Model: FP8 distilled (8 steps, CFG=1)\n- Click **Run** to generate!"
+      ],
+      "title": "ASMR Text-to-Video \u2014 No Audio"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      5,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      6,
+      0,
+      14,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      6,
+      0,
+      30,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      6,
+      0,
+      16,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      1,
+      2,
+      30,
+      1,
+      "VAE"
+    ],
+    [
+      7,
+      1,
+      2,
+      31,
+      1,
+      "VAE"
+    ],
+    [
+      8,
+      3,
+      0,
+      12,
+      0,
+      "CLIP"
+    ],
+    [
+      9,
+      10,
+      0,
+      12,
+      1,
+      "STRING"
+    ],
+    [
+      10,
+      12,
+      0,
+      13,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      12,
+      0,
+      13,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      12,
+      22,
+      0,
+      13,
+      2,
+      "FLOAT"
+    ],
+    [
+      13,
+      13,
+      0,
+      14,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      14,
+      13,
+      1,
+      14,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      14,
+      0,
+      30,
+      2,
+      "GUIDER"
+    ],
+    [
+      16,
+      15,
+      0,
+      30,
+      3,
+      "SAMPLER"
+    ],
+    [
+      17,
+      16,
+      0,
+      30,
+      4,
+      "SIGMAS"
+    ],
+    [
+      18,
+      17,
+      0,
+      30,
+      5,
+      "NOISE"
+    ],
+    [
+      19,
+      30,
+      0,
+      31,
+      0,
+      "LATENT"
+    ],
+    [
+      20,
+      31,
+      0,
+      40,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      22,
+      0,
+      40,
+      2,
+      "FLOAT"
+    ],
+    [
+      22,
+      40,
+      0,
+      41,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "ASMR Text-to-Video \u2014 No Audio (LTX-2)",
+      "bounding": [
+        -3400,
+        -200,
+        4200,
+        1200
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7,
+      "offset": [
+        800,
+        200
+      ]
+    },
+    "info": {
+      "name": "ASMR Text-to-Video \u2014 No Audio (LTX-2)",
+      "description": "Video-only generation. Layer ambient audio in CapCut/DaVinci."
+    }
+  },
+  "version": 0.4
+}

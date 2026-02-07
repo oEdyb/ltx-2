@@ -87,6 +87,17 @@ DEFAULT_I2V_PROMPT = (
     "A steady patter of rain against the window, with distant rumbles of thunder."
 )
 
+DEFAULT_ASMR_PROMPT_NOAUDIO = (
+    "Style: hyper-realistic, shot on ARRI Alexa, 85mm lens, shallow depth of field. "
+    "A static close-up of a rain-streaked window pane at night. Heavy raindrops "
+    "streak slowly down the frosted glass, each tracing a glistening path downward. "
+    "Beyond the glass, blurred city lights glow warmly in soft orange and yellow "
+    "bokeh. A lit candle flickers softly on the windowsill beside a steaming "
+    "ceramic cup of tea. Condensation slowly forms on the inside of the glass. "
+    "The camera remains perfectly still, framing the intimate scene in a medium "
+    "close-up."
+)
+
 
 class WorkflowBuilder:
     """Helper to build ComfyUI workflow JSONs with consistent links."""
@@ -523,6 +534,245 @@ def build_i2v():
     return wb.build()
 
 
+def build_t2v_noaudio():
+    """Text-to-Video workflow WITHOUT audio — uses LTXVBaseSampler.
+
+    Advantages over the UUID sampler version:
+    - No audio VAE loading (saves ~2GB VRAM + processing time)
+    - No two-stage upscaling (single model load, much less VRAM)
+    - Works reliably on A40 with FP8 model
+    - Faster generation (skip audio decode + upscale pass)
+
+    Trade-offs:
+    - Output is base resolution (768x512), not upscaled
+    - No generated audio (layer your own in post)
+    """
+    wb = WorkflowBuilder(
+        "ASMR Text-to-Video — No Audio (LTX-2)",
+        "Video-only generation. Layer ambient audio in CapCut/DaVinci."
+    )
+
+    # --- Loaders ---
+    wb.add_node(1, "CheckpointLoaderSimple", [-3200, 0],
+        widgets_values=["ltx-2-19b-distilled-fp8.safetensors"],
+        size=[400, 100],
+        outputs=[
+            {"name": "MODEL", "type": "MODEL", "links": []},
+            {"name": "CLIP", "type": "CLIP", "links": []},
+            {"name": "VAE", "type": "VAE", "links": []}
+        ])
+
+    wb.add_node(3, "LTXVGemmaCLIPModelLoader", [-3200, 180],
+        widgets_values=[
+            "gemma-3-12b-it-qat-q4_0-unquantized/model-00001-of-00005.safetensors",
+            "ltx-2-19b-distilled-fp8.safetensors", 1024
+        ],
+        size=[400, 100],
+        outputs=_output("CLIP", "CLIP"))
+
+    # --- LoRAs ---
+    wb.add_node(5, "LoraLoaderModelOnly", [-2700, 0],
+        title="Camera LoRA (Static - ASMR)",
+        widgets_values=["ltx-2-19b-lora-camera-control-static.safetensors", 1],
+        size=[350, 82],
+        inputs=[{"name": "model", "type": "MODEL", "link": None}],
+        outputs=_output("MODEL", "MODEL"))
+
+    wb.add_node(6, "LoraLoaderModelOnly", [-2700, 150],
+        title="Optional Style LoRA (Ctrl+B to enable)",
+        widgets_values=["your_lora.safetensors", 1],
+        mode=4,
+        size=[350, 82],
+        inputs=[{"name": "model", "type": "MODEL", "link": None}],
+        outputs=_output("MODEL", "MODEL"))
+
+    # --- Prompt ---
+    wb.add_node(10, "PrimitiveStringMultiline", [-2700, 350],
+        title="Your ASMR Prompt (describe visuals only — no audio needed)",
+        widgets_values=[DEFAULT_ASMR_PROMPT_NOAUDIO],
+        size=[500, 220],
+        outputs=_output("STRING", "STRING"))
+
+    wb.add_node(12, "CLIPTextEncode", [-2100, 350],
+        title="Text Encode",
+        widgets_values=[""],
+        size=[300, 100],
+        inputs=[
+            {"name": "clip", "type": "CLIP", "link": None},
+            {"name": "text", "type": "STRING", "widget": {"name": "text"}, "link": None}
+        ],
+        outputs=_output("CONDITIONING", "CONDITIONING"))
+
+    # --- Frame rate ---
+    wb.add_node(22, "PrimitiveFloat", [-2700, 630],
+        title="Frame Rate",
+        widgets_values=[24],
+        size=[210, 58],
+        outputs=_output("FLOAT", "FLOAT"))
+
+    # --- Conditioning ---
+    wb.add_node(13, "LTXVConditioning", [-1700, 350],
+        widgets_values=[24],
+        size=[210, 94],
+        inputs=[
+            {"name": "positive", "type": "CONDITIONING", "link": None},
+            {"name": "negative", "type": "CONDITIONING", "link": None},
+            {"name": "frame_rate", "type": "FLOAT", "widget": {"name": "frame_rate"}, "link": None}
+        ],
+        outputs=[
+            {"name": "positive", "type": "CONDITIONING", "links": []},
+            {"name": "negative", "type": "CONDITIONING", "links": []}
+        ])
+
+    # --- Sampler setup ---
+    wb.add_node(14, "STGGuiderAdvanced", [-1350, 0],
+        title="Guidance (CFG=1 for Distilled)",
+        widgets_values=[
+            0.998,      # skip_steps_sigma_threshold
+            True,       # cfg_star_rescale
+            "1.0",      # sigma breakpoints
+            "1",        # cfg_values (CFG=1 for distilled)
+            "0",        # stg_scale_values (disabled)
+            "1",        # stg_rescale_values
+            "[29]"      # stg_layers_indices
+        ],
+        size=[350, 280],
+        inputs=[
+            {"name": "model", "type": "MODEL", "link": None},
+            {"name": "positive", "type": "CONDITIONING", "link": None},
+            {"name": "negative", "type": "CONDITIONING", "link": None}
+        ],
+        outputs=_output("GUIDER", "GUIDER"))
+
+    wb.add_node(15, "KSamplerSelect", [-1350, 340],
+        title="Sampler Algorithm",
+        widgets_values=["euler"],
+        size=[210, 58],
+        inputs=[],
+        outputs=_output("SAMPLER", "SAMPLER"))
+
+    wb.add_node(16, "BasicScheduler", [-1350, 450],
+        title="Scheduler (8 steps for Distilled)",
+        widgets_values=["normal", 8, 1.0],
+        size=[250, 110],
+        inputs=[
+            {"name": "model", "type": "MODEL", "link": None}
+        ],
+        outputs=_output("SIGMAS", "SIGMAS"))
+
+    wb.add_node(17, "RandomNoise", [-1350, 610],
+        title="Noise Seed",
+        widgets_values=[42, "randomize"],
+        size=[210, 82],
+        inputs=[],
+        outputs=_output("NOISE", "NOISE"))
+
+    # --- Video sampler (no audio!) ---
+    wb.add_node(30, "LTXVBaseSampler", [-850, 0],
+        title="LTX-2 Video Sampler (No Audio)",
+        widgets_values=[768, 512, 65],
+        size=[300, 300],
+        inputs=[
+            {"name": "model", "type": "MODEL", "link": None},
+            {"name": "vae", "type": "VAE", "link": None},
+            {"name": "guider", "type": "GUIDER", "link": None},
+            {"name": "sampler", "type": "SAMPLER", "link": None},
+            {"name": "sigmas", "type": "SIGMAS", "link": None},
+            {"name": "noise", "type": "NOISE", "link": None}
+        ],
+        outputs=[
+            {"name": "denoised", "type": "LATENT", "links": []},
+            {"name": "positive", "type": "CONDITIONING", "links": []},
+            {"name": "negative", "type": "CONDITIONING", "links": []}
+        ])
+
+    # --- Decode + Output ---
+    wb.add_node(31, "VAEDecode", [-450, 0],
+        title="Decode Video Latent",
+        size=[210, 78],
+        inputs=[
+            {"name": "samples", "type": "LATENT", "link": None},
+            {"name": "vae", "type": "VAE", "link": None}
+        ],
+        outputs=_output("IMAGE", "IMAGE"))
+
+    wb.add_node(40, "CreateVideo", [-150, 0],
+        widgets_values=[24],
+        size=[210, 78],
+        inputs=[
+            {"name": "images", "type": "IMAGE", "link": None},
+            {"name": "audio", "type": "AUDIO", "link": None, "shape": 7},
+            {"name": "fps", "type": "FLOAT", "widget": {"name": "fps"}, "link": None}
+        ],
+        outputs=_output("VIDEO", "VIDEO"))
+
+    wb.add_node(41, "SaveVideo", [150, 0],
+        widgets_values=["video/ASMR-NoAudio", "auto", "auto"],
+        size=[630, 800],
+        inputs=[{"name": "video", "type": "VIDEO", "link": None}],
+        outputs=[])
+
+    # --- Notes ---
+    wb.add_node(50, "MarkdownNote", [-3200, -180],
+        title="ASMR Text-to-Video — No Audio",
+        size=[600, 150],
+        widgets_values=[
+            "# ASMR Text-to-Video — No Audio\n\n"
+            "Video-only pipeline. **Layer ambient audio in CapCut/DaVinci.**\n"
+            "Uses LTXVBaseSampler — no audio overhead, no two-stage upscale.\n\n"
+            "- Width/Height: divisible by 64 (default 768x512)\n"
+            "- Frames: 8n+1 rule (65=2.7s, 97=4s, 121=5s at 24fps)\n"
+            "- Model: FP8 distilled (8 steps, CFG=1)\n"
+            "- Click **Run** to generate!"
+        ],
+        inputs=[], outputs=[])
+
+    # --- Wiring ---
+    # Model: Checkpoint → LoRA1 → LoRA2
+    wb.connect(1, 0, 5, 0, "MODEL")
+    wb.connect(5, 0, 6, 0, "MODEL")
+
+    # LoRA'd model → guider, sampler, scheduler
+    wb.connect(6, 0, 14, 0, "MODEL")
+    wb.connect(6, 0, 30, 0, "MODEL")
+    wb.connect(6, 0, 16, 0, "MODEL")
+
+    # VAE → sampler + decoder
+    wb.connect(1, 2, 30, 1, "VAE")
+    wb.connect(1, 2, 31, 1, "VAE")
+
+    # CLIP → text encode
+    wb.connect(3, 0, 12, 0, "CLIP")
+
+    # Prompt → text encode
+    wb.connect(10, 0, 12, 1, "STRING")
+
+    # Text encode → conditioning (same for pos + neg with distilled CFG=1)
+    wb.connect(12, 0, 13, 0, "CONDITIONING")
+    wb.connect(12, 0, 13, 1, "CONDITIONING")
+
+    # Frame rate → conditioning
+    wb.connect(22, 0, 13, 2, "FLOAT")
+
+    # Conditioning → guider
+    wb.connect(13, 0, 14, 1, "CONDITIONING")
+    wb.connect(13, 1, 14, 2, "CONDITIONING")
+
+    # Sampler setup → LTXVBaseSampler
+    wb.connect(14, 0, 30, 2, "GUIDER")
+    wb.connect(15, 0, 30, 3, "SAMPLER")
+    wb.connect(16, 0, 30, 4, "SIGMAS")
+    wb.connect(17, 0, 30, 5, "NOISE")
+
+    # Latent → decode → video → save
+    wb.connect(30, 0, 31, 0, "LATENT")
+    wb.connect(31, 0, 40, 0, "IMAGE")
+    wb.connect(22, 0, 40, 2, "FLOAT")
+    wb.connect(40, 0, 41, 0, "VIDEO")
+
+    return wb.build()
+
+
 def save_workflow(wf, filename):
     """Save workflow JSON."""
     path = WORKFLOWS_DIR / filename
@@ -538,8 +788,10 @@ if __name__ == "__main__":
 
     save_workflow(build_t2v(), "asmr-txt2vid.json")
     save_workflow(build_i2v(), "asmr-img2vid.json")
+    save_workflow(build_t2v_noaudio(), "asmr-txt2vid-noaudio.json")
 
-    print("\nDone! Generated 2 core workflow files.")
-    print("\nNote: The extend, upscale, and full-pipeline workflows are best")
-    print("created by loading the official examples in ComfyUI and adapting.")
-    print("See README.md for instructions.")
+    print("\nDone! Generated 3 workflow files.")
+    print("\n  asmr-txt2vid.json          — T2V with audio (needs more VRAM)")
+    print("  asmr-img2vid.json          — I2V with audio (needs more VRAM)")
+    print("  asmr-txt2vid-noaudio.json  — T2V video-only (A40-friendly, fast)")
+    print("\nFor A40 GPUs, use the noaudio workflow. Layer audio in CapCut.")
