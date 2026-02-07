@@ -95,8 +95,7 @@ download_hf() {
 
     info "Downloading $desc..."
     $HF_CMD download "$repo" "$file" \
-        --local-dir "$dest" \
-        --local-dir-use-symlinks False
+        --local-dir "$dest"
     log "$desc — done"
 }
 
@@ -152,8 +151,7 @@ else
     info "Downloading Gemma 3 12B text encoder (~7GB)..."
     info "(If this fails, you may need to run: hf auth login)"
     $HF_CMD download google/gemma-3-12b-it-qat-q4_0-unquantized \
-        --local-dir "$GEMMA_DIR" \
-        --local-dir-use-symlinks False
+        --local-dir "$GEMMA_DIR"
     log "Gemma 3 text encoder — done"
 fi
 
